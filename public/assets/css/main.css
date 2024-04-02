@@ -1,5 +1,14 @@
 @import url("./header/header.css");
 @import url("./footer/footer.css");
+
+:root {
+  --defaultBg: #f4f5f7;
+  --colorWhite: #fff;
+  --paraColor: rgba(3, 26, 38, 0.6);
+  --themeBg: #64ddbb;
+  --textColor: #8993a4;
+  --footerBg: #151c22;
+}
 body {
   margin: 0;
   margin: 0;
@@ -28,19 +37,11 @@ li {
 
 a {
   text-decoration: none;
+  color: var(--footerBg) !important;
 }
 
 .mb-50 {
   margin-bottom: 50px;
-}
-
-:root {
-  --defaultBg: #f4f5f7;
-  --colorWhite: #fff;
-  --paraColor: rgba(3, 26, 38, 0.6);
-  --themeBg: #64ddbb;
-  --textColor: #8993a4;
-  --footerBg: #151c22;
 }
 
 .banner-sec {

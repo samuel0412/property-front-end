@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import banner from "@/public/images/banner.jpg";
 import demoProperty from "@/public/images/demoProperty.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faLocationCrosshairs,
   faMagnifyingGlass,

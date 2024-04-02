@@ -1,8 +1,14 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/images/logo-dark.png";
+import Script from "next/script";
+import LoginModal from "./LoginModal";
+// import $ from "jquery";
 function Header() {
+  const [show, setShow] = useState(false);
+
   return (
     <>
       <div className="site-mobile-menu site-navbar-target">
@@ -109,10 +115,8 @@ function Header() {
                         <Link className="post_properties" href={"/"}>
                           Post your property
                         </Link>
-                        <li>
-                          <Link href="/" className="nav-link">
-                            Login
-                          </Link>
+                        <li onClick={() => setShow(true)}>
+                          <span>Login</span>
                         </li>
                       </ul>
                     </div>
@@ -123,6 +127,7 @@ function Header() {
           </div>
         </div>
       </div>
+      {show && <LoginModal show={show} setShow={setShow} />}
     </>
   );
 }
