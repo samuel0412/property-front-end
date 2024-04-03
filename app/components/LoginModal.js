@@ -2,12 +2,20 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { createAccount } from "../services/auth";
+import { createAccount, otpVerifyUser } from "../services/auth";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { addTodo } from "../lib/features/todoSlice";
+import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import OTPInput from "react-otp-input";
 
 const LoginModal = ({ show, setShow }) => {
-  const [toggleEmailPhone, setToggleEmailPhone] = useState(false);
+  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [toggleEmail, setToggleEmail] = useState(false);
+  const [togglePhone, setTogglePhone] = useState(true);
+  const [errorShow, setErrorShow] = useState(false);
   const [createNewAccountWithEmail, setCreateNewAccountWithEmail] =
     useState(false);
   const [loader, setLoader] = useState(false);
@@ -16,8 +24,18 @@ const LoginModal = ({ show, setShow }) => {
     userName: "",
     password: "",
     contactNumber: "",
-    profilePic: "",
+    // profilePic: "",
     role: "user",
+  });
+  const [errors, setErrors] = useState({
+    email: "",
+    userName: "",
+    password: "",
+    contactNumber: "",
+  });
+  const [loginUserData, setLoginUserData] = useState({
+    email: "",
+    password: "",
   });
   const handleChange = async (e) => {
     let { name, value } = e.target;
@@ -31,48 +49,109 @@ const LoginModal = ({ show, setShow }) => {
     setUserData((prevstate) => {
       return { ...prevstate, [name]: value };
     });
+    setErrors({
+      email: "",
+      userName: "",
+      password: "",
+      contactNumber: "",
+    });
+  };
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+    if (userData.userName.trim() === "") {
+      newErrors.userName = "Username is required";
+      isValid = false;
+    } else {
+      newErrors.userName = "";
+    }
+    if (!/\S+@\S+\.\S+/.test(userData.email)) {
+      newErrors.email = "Email is invalid";
+      isValid = false;
+    } else {
+      newErrors.email = "";
+    }
+
+    if (userData.contactNumber.length !== 10) {
+      newErrors.contactNumber = "Contact number must be 10 characters";
+      isValid = false;
+    } else {
+      newErrors.contactNumber = "";
+    }
+
+    if (userData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+      isValid = false;
+    } else {
+      newErrors.password = "";
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const createUserHandler = async () => {
-    console.log("hello");
-    let check = true;
-    const data = {
-      email: userData.email,
-      userName: userData.userName,
-      password: userData.password,
-      contactNumber: userData.contactNumber,
-      profilePic: userData.profilePic,
-      role: "user",
+    if (validateForm()) {
+      const data = {
+        email: userData.email,
+        userName: userData.userName,
+        password: userData.password,
+        contactNumber: userData.contactNumber,
+        role: "user",
+      };
+
+      try {
+        setLoader(true);
+        const res = await createAccount(data);
+
+        if (res.ack === 1) {
+          toast.success(res.msg);
+          setUserData({
+            email: "",
+            userName: "",
+            password: "",
+            contactNumber: "",
+          });
+          setCreateNewAccountWithEmail(false);
+          setShowOtpInput(true);
+        } else {
+          toast.error(res.msg);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoader(false);
+      }
+    } else {
+      toast.error("Please check your from");
+    }
+  };
+
+  const handleClear = () => {
+    setOtp("");
+  };
+
+  const handleSubmit = async () => {
+    const otpData = {
+      code: otp,
     };
-    // if (
-    //   userData.email === "" ||
-    //   userData.userName === "" ||
-    //   userData.password === "" ||
-    //   userData.contactNumber === ""
-    //   // userData.profilePic === ""
-    // ) {
-    //   check = false;
-    // }
-    // if (!check) return;
     try {
       setLoader(true);
-      const res = await createAccount(data);
+      const res = await otpVerifyUser(otpData);
+      if (res.ack === 1) {
+        setShow(false);
+        toast.success(res.msg);
+      } else {
+        toast.error(res.msg);
+      }
     } catch (e) {
       console.error(e);
     } finally {
       setLoader(false);
     }
+    console.log("Submitted OTP:", otp);
   };
-
-  const [input, setInput] = useState("hello1");
-  const dispatch = useAppDispatch();
-
-  const addTodoHandler = (e) => {
-    e.preventDefault();
-    dispatch(addTodo(input));
-    // setInput("");
-  };
-  console.log(useAppSelector((state) => state));
+  const loginHandLer = () => {};
   return (
     <>
       <Modal
@@ -85,7 +164,7 @@ const LoginModal = ({ show, setShow }) => {
         <Modal.Header closeButton style={{ borderBottom: "none" }}>
           <Modal.Title>Login or Register</Modal.Title>
         </Modal.Header>
-        {toggleEmailPhone ? (
+        {togglePhone && (
           <>
             <Modal.Body>
               <div className="details_right p-0">
@@ -114,17 +193,22 @@ const LoginModal = ({ show, setShow }) => {
             <div className="ph_or_email d-flex align-items-center px-3 justify-content-center">
               <hr /> <span>Or</span> <hr />
             </div>
-            <div className="continue_email px-3 mb-4 mt-2 text-center">
+            <div className=" px-3 mb-4 mt-2 text-center">
               <button
-                onClick={() => setToggleEmailPhone(false)}
+                onClick={() => {
+                  setToggleEmail(true);
+                  setTogglePhone(false);
+                }}
                 style={{ border: "none" }}
-                className="post_properties"
+                className=" post_properties"
               >
-                <i className="fa-solid fa-envelope"></i>Continue with Email
+                <FontAwesomeIcon icon={faEnvelope} /> {""}
+                Continue with Email
               </button>
             </div>
           </>
-        ) : (
+        )}
+        {toggleEmail && (
           <>
             <Modal.Body>
               <div className="details_right p-0">
@@ -161,20 +245,27 @@ const LoginModal = ({ show, setShow }) => {
                 Login
               </button>
               <button
-                onClick={() => setToggleEmailPhone(true)}
+                onClick={() => {
+                  setToggleEmail(false);
+                  setTogglePhone(true);
+                }}
                 style={{ width: "50%", textAlign: "center", border: "none" }}
                 className="post_properties"
                 type="button"
               >
                 Login using phone number
               </button>
-              <div onClick={() => setCreateNewAccountWithEmail(true)}>
+              <div>
                 <span>
                   Did not have an account ?{" "}
                   <small
                     style={{ cursor: "pointer", textDecoration: "underLine" }}
+                    onClick={() => {
+                      setToggleEmail(false);
+                      setTogglePhone(false);
+                      setCreateNewAccountWithEmail(true);
+                    }}
                   >
-                    {" "}
                     Create new account
                   </small>
                 </span>
@@ -193,13 +284,24 @@ const LoginModal = ({ show, setShow }) => {
                   name="userName"
                   onChange={handleChange}
                 />
+                {errors.userName && (
+                  <label className="errorLabel">{errors.userName}</label>
+                )}
                 <input
                   type="text"
-                  className="form-control mt-2"
+                  className={
+                    errorShow
+                      ? `error form-control mt-2 `
+                      : `form-control mt-2 `
+                  }
                   placeholder="Email ID"
                   name="email"
                   onChange={handleChange}
                 />
+                {errors.email && (
+                  <label className="errorLabel">{errors.email}</label>
+                )}
+
                 <input
                   type="text"
                   className="form-control mt-2"
@@ -207,6 +309,9 @@ const LoginModal = ({ show, setShow }) => {
                   name="contactNumber"
                   onChange={handleChange}
                 />
+                {errors.contactNumber && (
+                  <label className="errorLabel">{errors.contactNumber}</label>
+                )}
                 <input
                   type="text"
                   className="form-control mt-2"
@@ -214,13 +319,16 @@ const LoginModal = ({ show, setShow }) => {
                   name="password"
                   onChange={handleChange}
                 />
-                <input
+                {errors.password && (
+                  <label className="errorLabel">{errors.password}</label>
+                )}
+                {/* <input
                   type="file"
                   className="form-control mt-2"
                   placeholder="Upload Profile"
                   name="profilePic"
                   onChange={handleChange}
-                />
+                /> */}
               </div>
             </Modal.Body>
             <Modal.Footer
@@ -237,6 +345,43 @@ const LoginModal = ({ show, setShow }) => {
               </button>
             </Modal.Footer>
           </>
+        ) : showOtpInput ? (
+          <div style={{ padding: "10px", margin: "auto" }}>
+            <OTPInput
+              value={otp}
+              onChange={setOtp}
+              numInputs={6}
+              renderSeparator={<span>-</span>}
+              renderInput={(props) => <input {...props} />}
+              inputStyle={{
+                width: "40px",
+                height: "40px",
+                margin: "8px",
+                fontSize: "18px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                outline: "none",
+                textAlign: "center",
+              }}
+            />
+            <div className="mt-4 mb-4 text-center">
+              {" "}
+              <button
+                onClick={handleClear}
+                className="btn btn-primary "
+                style={{ marginRight: "10px" }}
+              >
+                Clear
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="btn btn-primary mr-4"
+                type="button"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
         ) : (
           ""
         )}

@@ -1,7 +1,7 @@
 import API from "../../config/apiConfig";
 import endpoints from "../../config/endpoints";
 
-const SignIn = async (loginData) => {
+const signIn = async (loginData) => {
   try {
     const responseLogin = await API.post(endpoints.login, loginData);
     return responseLogin.data;
@@ -17,5 +17,13 @@ const createAccount = async (signupData) => {
     console.log(error.message);
   }
 };
+const otpVerifyUser = async (optData) => {
+  try {
+    const res = await API.post(endpoints.otpVerify, optData);
+    return res.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-export { createAccount };
+export { createAccount, otpVerifyUser };
