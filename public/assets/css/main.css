@@ -1,14 +1,6 @@
 @import url("./header/header.css");
 @import url("./footer/footer.css");
 
-:root {
-  --defaultBg: #f4f5f7;
-  --colorWhite: #fff;
-  --paraColor: rgba(3, 26, 38, 0.6);
-  --themeBg: #64ddbb;
-  --textColor: #8993a4;
-  --footerBg: #151c22;
-}
 body {
   margin: 0;
   margin: 0;
@@ -17,6 +9,10 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+a {
+  color: var(--footerBg);
 }
 
 h1,
@@ -37,12 +33,53 @@ li {
 
 a {
   text-decoration: none;
-  color: var(--footerBg) !important;
 }
 
 .mb-50 {
   margin-bottom: 50px;
 }
+
+:root {
+  --defaultBg: #f4f5f7;
+  --colorWhite: #fff;
+  --paraColor: rgba(3, 26, 38, 0.6);
+  --themeBg: #64ddbb;
+  --textColor: #8993a4;
+  --footerBg: #151c22;
+}
+
+/* login page css */
+
+.ph_or_email hr {
+  flex-grow: 1;
+  border: 1px solid var(--textColor);
+}
+
+.ph_or_email span {
+  margin: 0px 15px;
+}
+
+.continue_email button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  background: var(--colorWhite);
+  border: 1px solid var(--textColor);
+  justify-content: center;
+  padding: 8px 0px;
+}
+
+.terms_con p {
+  line-height: 15px;
+  font-size: 11px;
+}
+
+.terms_con p a {
+  color: blue;
+}
+
+/* banner sec */
 
 .banner-sec {
   overflow: hidden;
@@ -91,7 +128,7 @@ a {
   position: relative;
 }
 
-.search-input svg {
+.search-input i {
   position: absolute;
   top: 17px;
   left: 15px;
@@ -109,7 +146,7 @@ a {
   top: 5px;
 }
 
-.search-input .location-icon svg {
+.search-input .location-icon i {
   position: static;
   color: var(--colorWhite);
 }
@@ -699,6 +736,22 @@ a {
   padding: 20px 30px;
 }
 
+.details_right span {
+  color: var(--textColor);
+  font-size: 14px;
+}
+
+.details_right .form-control {
+  border-radius: 0px;
+  margin-top: 12px;
+  box-shadow: inset 0 -1px 1px rgb(100 221 187 / 45%);
+}
+
+.details_right .form-control:focus {
+  box-shadow: none;
+  border: 1px solid var(--themeBg);
+}
+
 .preference_widget {
   padding-top: 35px;
 }
@@ -733,6 +786,56 @@ a {
 
 .preference_widget h6 {
   margin-bottom: 13px;
+}
+
+.file_input {
+  position: relative;
+  height: 140px;
+}
+
+.file_input input {
+  height: 140px;
+  opacity: 0;
+}
+
+.file_input span {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  flex-direction: column;
+}
+
+.file_input span button.post_properties {
+  border: none;
+}
+
+.view_img {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.view_img img {
+  width: 100%;
+}
+
+.delete_img {
+  background: var(--themeBg);
+  border: none;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--colorWhite);
+  position: absolute;
+  top: 0;
+  right: 0px;
 }
 
 /* pagination */
