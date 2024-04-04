@@ -26,7 +26,7 @@ function Home() {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
@@ -55,7 +55,7 @@ function Home() {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
@@ -133,7 +133,7 @@ function Home() {
       <div className="similar-projects">
         <div className="container">
           <div className="row">
-            <div className="col-lg-8">
+            <div className="col-lg-12">
               <div className="row">
                 <div className="col-sm-12">
                   <h2 className="project-title">Projects in High Demand</h2>

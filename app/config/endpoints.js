@@ -3,6 +3,8 @@ const endpoints = {
   BASE_URL: BASE_URL,
   userSignUp: "/users/signup",
   otpVerify: "users/resetCodeSubmit",
+  propertiesList: "/property/get-list", // property/get-list?elements=10&page=1
+  propertyListedFor: "property/listed-for", // property/get-list?elements=10&page=1
 };
 
 export default endpoints;

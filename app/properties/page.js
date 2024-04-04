@@ -3,25 +3,16 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Slider from "react-slick";
 import banner from "@/public/images/banner.jpg";
-import propertyImage from "@/public/images/property.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationCrosshairs,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import Header from "../components/Header";
+import ListProperties from "../components/properties-listing/ListProperties";
 
 const PropertiesView = () => {
-  var property = {
-    dots: true,
-    infinite: true,
-    autoplay: true,
-    speed: 400,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   return (
     <>
       {/* <div className="banner-sec">
@@ -301,7 +292,8 @@ const PropertiesView = () => {
             <div className="col-lg-9">
               <div className="row">
                 <div className="col-sm-12">
-                  {Array.from({ length: 20 }).map((item, index) => {
+                  <ListProperties />
+                  {/* {Array.from({ length: 20 }).map((item, index) => {
                     return (
                       <Link
                         key={index}
@@ -370,7 +362,7 @@ const PropertiesView = () => {
                         </div>
                       </Link>
                     );
-                  })}
+                  })} */}
                 </div>
                 <div className="col-sm-12">
                   <ul

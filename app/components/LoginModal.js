@@ -337,7 +337,7 @@ const LoginModal = ({ show, setShow }) => {
             >
               <button
                 onClick={createUserHandler}
-                style={{ width: "100%", textAlign: "center" }}
+                style={{ width: "100%", border: "none" }}
                 className="post_properties"
                 type="button"
               >

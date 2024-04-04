@@ -116,7 +116,7 @@ function Header() {
                           Post your property
                         </Link>
                         <li onClick={() => setShow(true)}>
-                          <span>Login</span>
+                          <span style={{ cursor: "pointer" }}>Login</span>
                         </li>
                       </ul>
                     </div>

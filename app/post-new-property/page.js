@@ -1,11 +1,29 @@
 "use client";
 import React, { useState } from "react";
+import { getPropertiesListedFor } from "../services/properties";
+import { useEffect } from "react";
 
 function PostNewProperty() {
   const [step, setStep] = useState(1);
+  const [propertyListedFor, setPropertyListedFor] = useState();
+  const [propertyListedForValue, setPropertyListedForValue] = useState("");
+  console.log("............propertyListedForValue", propertyListedForValue);
   const postPropertyStepper = () => {
     setStep(step + 1);
   };
+  const getPropertiesListedForHandler = async () => {
+    try {
+      const res = await getPropertiesListedFor();
+      if (res.ack === 1) {
+        setPropertyListedFor(res.data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  useEffect(() => {
+    getPropertiesListedForHandler();
+  }, []);
   return (
     <div>
       <div className="details_bg">
@@ -63,7 +81,7 @@ function PostNewProperty() {
                     <h5>Fill out basic details</h5>
                     <div className="preference_widget">
                       <h6>I'm looking to</h6>
-                      <div className="basic_tag active_widget">
+                      {/* <div className="basic_tag active_widget">
                         <span>Sell</span>
                       </div>
                       <div className="basic_tag">
@@ -71,6 +89,26 @@ function PostNewProperty() {
                       </div>
                       <div className="basic_tag">
                         <span>PG</span>
+                      </div> */}
+                      <div style={{ width: "30%" }}>
+                        <select
+                          className="form-select form-control"
+                          aria-label="Default select example"
+                          onChange={(e) =>
+                            setPropertyListedForValue(e.target.value)
+                          }
+                        >
+                          <option selected>Open this select menu</option>
+                          {propertyListedFor?.map((item, index) => {
+                            return (
+                              <>
+                                <option value={item} key={index}>
+                                  {item}
+                                </option>
+                              </>
+                            );
+                          })}
+                        </select>
                       </div>
                     </div>
                     <div className="preference_widget">

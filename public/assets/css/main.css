@@ -71,7 +71,7 @@ a {
   align-items: center;
   gap: 16px;
   width: 100%;
-  background: var(--colorWhite);
+  background: var(--themeBg);
   border: 1px solid var(--textColor);
   justify-content: center;
   padding: 8px 0px;
@@ -135,7 +135,7 @@ a {
   position: relative;
 }
 
-.search-input i {
+.search-input svg {
   position: absolute;
   top: 17px;
   left: 15px;
@@ -153,7 +153,7 @@ a {
   top: 5px;
 }
 
-.search-input .location-icon i {
+.search-input .location-icon svg {
   position: static;
   color: var(--colorWhite);
 }
@@ -480,11 +480,9 @@ a {
   left: 0;
   top: 0;
   opacity: 0;
-  background: linear-gradient(
-    transparent,
-    rgb(100 221 187 / 69%),
-    rgb(100 221 187 / 77%)
-  );
+  background: linear-gradient(transparent,
+      rgb(100 221 187 / 69%),
+      rgb(100 221 187 / 77%));
   width: 100%;
   height: 100%;
   z-index: 2;
@@ -846,7 +844,7 @@ a {
 }
 
 /* pagination */
-.reactPaginate > li {
+.reactPaginate>li {
   margin-right: 5px;
 }
 
@@ -1000,6 +998,7 @@ ul.reactPaginate li.next a {
 
 .project_overview img {
   width: 30px;
+  height: 30px;
   margin: 6px 10px 0px 0px;
 }
 
