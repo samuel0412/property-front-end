@@ -1,5 +1,14 @@
 @import url("./header/header.css");
 @import url("./footer/footer.css");
+:root {
+  --defaultBg: #f4f5f7;
+  --colorWhite: #fff;
+  --paraColor: rgba(3, 26, 38, 0.6);
+  --themeBg: #64ddbb;
+  --textColor: #8993a4;
+  --footerBg: #151c22;
+  --error: #dc3545;
+}
 
 body {
   margin: 0;
@@ -15,6 +24,13 @@ a {
   color: var(--footerBg);
 }
 
+.error {
+  border: 1px solid var(--error) !important;
+}
+.errorLabel {
+  padding: 10px 0px 10px 0px;
+  color: var(--error);
+}
 h1,
 h2,
 h3,
@@ -37,15 +53,6 @@ a {
 
 .mb-50 {
   margin-bottom: 50px;
-}
-
-:root {
-  --defaultBg: #f4f5f7;
-  --colorWhite: #fff;
-  --paraColor: rgba(3, 26, 38, 0.6);
-  --themeBg: #64ddbb;
-  --textColor: #8993a4;
-  --footerBg: #151c22;
 }
 
 /* login page css */

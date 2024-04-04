@@ -4,6 +4,8 @@ import "./globals.css";
 import Script from "next/script";
 import $ from "jquery";
 import StoreProvider from "./StoreProvider";
+import ToastContainerHandler from "./components/ToastContainer";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -35,7 +37,10 @@ export default function RootLayout({ children }) {
           />
         </head>
         <body className={inter.className}>
-          <div>{children}</div>
+          <div>
+            {children}
+            <ToastContainerHandler />
+          </div>
         </body>
       </html>
       <Script
