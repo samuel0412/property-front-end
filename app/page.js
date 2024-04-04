@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import banner from "@/public/images/banner.jpg";
 import demoProperty from "@/public/images/demoProperty.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Tab, Tabs } from "react-bootstrap";
 
 import {
   faLocationCrosshairs,
@@ -91,40 +92,99 @@ function Home() {
           <div className="row justify-content-center">
             <div className="col-lg-8">
               <div className="banner_search">
-                <div className="tab-content" id="pills-tabContent">
-                  <div className="search-area">
-                    <div className="select_properties">
-                      <select
-                        name=""
-                        className="form-select form-control"
-                        defaultValue={"DEFAULT"}
-                      >
-                        <option value="DEFAULT" disabled>
-                          All Residential
-                        </option>
-                        <option value="Buy">Buy</option>
-                        <option value="Rent">Rent</option>
-                        <option value="Commercial">Commercial</option>
-                        <option value="Plots">Plots</option>
-                      </select>
-                    </div>
-                    <div className="search-input">
-                      <FontAwesomeIcon icon={faMagnifyingGlass} />
-                      <input
-                        type="text"
-                        name=""
-                        className="form-control"
-                        placeholder="Search here"
-                      />
-                      <div className="location-icon">
-                        <FontAwesomeIcon icon={faLocationCrosshairs} />
+                <Tabs defaultActiveKey="Buy" id="fill-tab-example" fill>
+                  <Tab eventKey="Buy" title="Buy">
+                    <div className="search-area">
+                      {/* <div className="select_properties">
+                        <select
+                          name=""
+                          className="form-select form-control"
+                          defaultValue={"DEFAULT"}
+                        >
+                          <option value="DEFAULT" disabled>
+                            All Residential
+                          </option>
+                          <option value="Buy">Buy</option>
+                          <option value="Rent">Rent</option>
+                          <option value="Commercial">Commercial</option>
+                          <option value="Plots">Plots</option>
+                        </select>
+                      </div> */}
+                      <div className="search-input">
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                        <input
+                          type="text"
+                          name=""
+                          className="form-control"
+                          placeholder="Search here"
+                        />
+                        <div className="location-icon">
+                          <FontAwesomeIcon icon={faLocationCrosshairs} />
+                        </div>
+                      </div>
+                      <div className="search-btn">
+                        <button>Search</button>
                       </div>
                     </div>
-                    <div className="search-btn">
-                      <button>Search</button>
+                  </Tab>
+                  <Tab eventKey="Rent" title="Rent">
+                    <div className="search-area">
+                      <div className="search-input">
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                        <input
+                          type="text"
+                          name=""
+                          className="form-control"
+                          placeholder="Search here"
+                        />
+                        <div className="location-icon">
+                          <FontAwesomeIcon icon={faLocationCrosshairs} />
+                        </div>
+                      </div>
+                      <div className="search-btn">
+                        <button>Search</button>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </Tab>
+                  <Tab eventKey="Commercial" title="Commercial">
+                    <div className="search-area">
+                      <div className="search-input">
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                        <input
+                          type="text"
+                          name=""
+                          className="form-control"
+                          placeholder="Search here"
+                        />
+                        <div className="location-icon">
+                          <FontAwesomeIcon icon={faLocationCrosshairs} />
+                        </div>
+                      </div>
+                      <div className="search-btn">
+                        <button>Search</button>
+                      </div>
+                    </div>
+                  </Tab>
+                  <Tab eventKey="Plots" title="Plots">
+                    <div className="search-area">
+                      <div className="search-input">
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                        <input
+                          type="text"
+                          name=""
+                          className="form-control"
+                          placeholder="Search here"
+                        />
+                        <div className="location-icon">
+                          <FontAwesomeIcon icon={faLocationCrosshairs} />
+                        </div>
+                      </div>
+                      <div className="search-btn">
+                        <button>Search</button>
+                      </div>
+                    </div>
+                  </Tab>
+                </Tabs>
               </div>
             </div>
           </div>

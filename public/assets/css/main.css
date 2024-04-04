@@ -98,10 +98,12 @@ a {
 }
 
 .banner_search .nav {
+  width: 100%;
   display: inline-flex;
   background: var(--colorWhite);
   position: relative;
   z-index: 1;
+  border: none;
 }
 
 .banner-search-sec {
@@ -176,8 +178,22 @@ a {
 .search-btn button {
   background: var(--themeBg);
   border: none;
-  padding: 12px 30px;
+  padding: 12px 50px;
   color: var(--colorWhite);
+}
+
+.banner_search .nav-tabs .nav-link {
+  border-right: 1px solid var(--themeBg);
+  border-bottom: 1px solid var(--themeBg);
+  border-radius: 0px;
+  padding: 12px 0px;
+  color: var(--footerBg);
+}
+
+.banner_search .nav-tabs .nav-link.active {
+  background-color: var(--themeBg);
+  color: var(--colorWhite);
+  border-bottom: 1px solid var(--themeBg);
 }
 
 .similar-projects {
