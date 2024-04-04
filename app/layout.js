@@ -4,6 +4,8 @@ import "./globals.css";
 import Script from "next/script";
 import $ from "jquery";
 import StoreProvider from "./StoreProvider";
+import ToastContainerHandler from "./components/ToastContainer";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -35,9 +37,16 @@ export default function RootLayout({ children }) {
           />
         </head>
         <body className={inter.className}>
-          <div>{children}</div>
+          <div>
+            {children}
+            <ToastContainerHandler />
+          </div>
         </body>
       </html>
+      <Script
+        src="https://kit.fontawesome.com/28268a0127.js"
+        crossorigin="anonymous"
+      ></Script>
     </StoreProvider>
   );
 }

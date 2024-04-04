@@ -1,5 +1,14 @@
 @import url("./header/header.css");
 @import url("./footer/footer.css");
+:root {
+  --defaultBg: #f4f5f7;
+  --colorWhite: #fff;
+  --paraColor: rgba(3, 26, 38, 0.6);
+  --themeBg: #64ddbb;
+  --textColor: #8993a4;
+  --footerBg: #151c22;
+  --error: #dc3545;
+}
 
 body {
   margin: 0;
@@ -15,6 +24,13 @@ a {
   color: var(--footerBg);
 }
 
+.error {
+  border: 1px solid var(--error) !important;
+}
+.errorLabel {
+  padding: 10px 0px 10px 0px;
+  color: var(--error);
+}
 h1,
 h2,
 h3,
@@ -39,15 +55,6 @@ a {
   margin-bottom: 50px;
 }
 
-:root {
-  --defaultBg: #f4f5f7;
-  --colorWhite: #fff;
-  --paraColor: rgba(3, 26, 38, 0.6);
-  --themeBg: #64ddbb;
-  --textColor: #8993a4;
-  --footerBg: #151c22;
-}
-
 /* login page css */
 
 .ph_or_email hr {
@@ -64,7 +71,7 @@ a {
   align-items: center;
   gap: 16px;
   width: 100%;
-  background: var(--colorWhite);
+  background: var(--themeBg);
   border: 1px solid var(--textColor);
   justify-content: center;
   padding: 8px 0px;
@@ -128,7 +135,7 @@ a {
   position: relative;
 }
 
-.search-input i {
+.search-input svg {
   position: absolute;
   top: 17px;
   left: 15px;
@@ -146,7 +153,7 @@ a {
   top: 5px;
 }
 
-.search-input .location-icon i {
+.search-input .location-icon svg {
   position: static;
   color: var(--colorWhite);
 }
@@ -473,11 +480,9 @@ a {
   left: 0;
   top: 0;
   opacity: 0;
-  background: linear-gradient(
-    transparent,
-    rgb(100 221 187 / 69%),
-    rgb(100 221 187 / 77%)
-  );
+  background: linear-gradient(transparent,
+      rgb(100 221 187 / 69%),
+      rgb(100 221 187 / 77%));
   width: 100%;
   height: 100%;
   z-index: 2;
@@ -839,7 +844,7 @@ a {
 }
 
 /* pagination */
-.reactPaginate > li {
+.reactPaginate>li {
   margin-right: 5px;
 }
 
@@ -993,6 +998,7 @@ ul.reactPaginate li.next a {
 
 .project_overview img {
   width: 30px;
+  height: 30px;
   margin: 6px 10px 0px 0px;
 }
 
