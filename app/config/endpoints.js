@@ -4,9 +4,10 @@ const endpoints = {
   login: "users/login",
   userSignUp: "/users/signup",
   otpVerify: "users/resetCodeSubmit",
-  propertiesList: "/property/get-list", // property/get-list?elements=10&page=1
+  propertiesList: "property/get-list", // property/get-list?elements=10&page=1
   propertyListedFor: "property/listed-for", // property/get-list?elements=10&page=1
   zoneList: "zone/get-list",
+  allAmenities: "amenity/all",
 };
 
 export default endpoints;

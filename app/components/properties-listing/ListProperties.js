@@ -4,11 +4,12 @@ import Link from "next/link";
 import propertyImage from "@/public/images/property.jpg";
 import Slider from "react-slick";
 import { getPropertiesList } from "../../services/properties";
+import Pagination from "../paginator/Pagination";
 
 const ListProperties = () => {
   const [getData, setGetData] = useState([]);
   const [page, setPage] = useState(1);
-  const [ele, setEle] = useState(100);
+  const [totalPage, setTotalPage] = useState();
   var property = {
     dots: true,
     infinite: true,
@@ -17,11 +18,27 @@ const ListProperties = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+  const paginationProcess = (number) => {
+    setPage(number);
+  };
+  const paginationStep = (type) => {
+    if (type === "prev") {
+      if (page > 1) {
+        setPage(page - 1);
+      }
+    }
+    if (type === "next") {
+      if (page < totalPage) {
+        setPage(page + 1);
+      }
+    }
+  };
   const propertiesList = async () => {
     try {
-      const res = await getPropertiesList(ele, page);
+      const res = await getPropertiesList(Number(3), page);
       console.log("res", res.data);
       setGetData(res.data);
+      setTotalPage(res.totalPage);
       // if (res.ack === 1) {
       //   setBookedSpaceData(res);
       // }
@@ -31,7 +48,7 @@ const ListProperties = () => {
   };
   useEffect(() => {
     propertiesList();
-  }, []);
+  }, [page]);
   return (
     <>
       {getData &&
@@ -109,7 +126,7 @@ const ListProperties = () => {
                           <p>View Number</p>
                         </div>
                         <div className="inner_card_price_sub">
-                          <span>₹1.96 - 3.07 Cr</span>
+                          {item?.amount}
                         </div>
                       </div>
                     </div>
@@ -119,6 +136,14 @@ const ListProperties = () => {
             </Link>
           );
         })}
+      <div className="col-sm-12">
+        <Pagination
+          paginationProcess={paginationProcess}
+          paginationStep={paginationStep}
+          totalPage={totalPage}
+          page={page}
+        />
+      </div>
     </>
   );
 };

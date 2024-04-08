@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import banner from "@/public/images/banner.jpg";
@@ -11,8 +11,39 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Header from "../components/Header";
 import ListProperties from "../components/properties-listing/ListProperties";
+import { getAmenities, getPropertyStatus } from "../services/properties";
 
 const PropertiesView = () => {
+  const [amenities, setAmenities] = useState([]);
+  const [active, setActive] = useState(false);
+  const [storeData, setStoreData] = useState([]);
+
+  const propertyType = ["Flat", "House", "Plot", "office"];
+  const propertyStatus = ["Ready_to_move", "Under_Construction"];
+  const noOfBedRoom = ["1 BHK", "2 BHK", "3 BHK", "4 BHK", "5 BHK"];
+
+  function removeUnderScore(value) {
+    try {
+      let v = value.replace(/_/g, " ");
+      return v;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const getAllAmenities = async () => {
+    try {
+      const res = await getAmenities();
+      setAmenities(res.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const handleChange = (item) => {
+    console.log("x", item);
+  };
+  useEffect(() => {
+    getAllAmenities();
+  }, []);
   return (
     <>
       {/* <div className="banner-sec">
@@ -84,26 +115,23 @@ const PropertiesView = () => {
                       className="accordion-collapse collapse show"
                     >
                       <div className="accordion-body">
-                        <div className="tags_property active_widget">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Residential Apartment</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Residential Land</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Independent/Builder Floor</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>1 RK/ Studio Apartment</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Independent House/Villa</span>
-                        </div>
+                        {propertyType &&
+                          propertyType.map((property, i) => {
+                            return (
+                              <div
+                                key={i}
+                                className={
+                                  active
+                                    ? "tags_property active_widget"
+                                    : "tags_property"
+                                }
+                                onClick={() => handleChange(property)}
+                              >
+                                <i className="fa-solid fa-plus"></i>
+                                <span>{property}</span>
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
@@ -125,26 +153,18 @@ const PropertiesView = () => {
                       className="accordion-collapse collapse show"
                     >
                       <div className="accordion-body">
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>1 RK/1 BHK</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>2 BHK</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>3 BHK</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>4 BHK</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>5 BHK</span>
-                        </div>
+                        {noOfBedRoom &&
+                          noOfBedRoom.map((room, i) => {
+                            return (
+                              <div
+                                key={i}
+                                className="tags_property active_widget"
+                              >
+                                <i className="fa-solid fa-plus"></i>
+                                <span>{removeUnderScore(room)}</span>
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
@@ -166,18 +186,18 @@ const PropertiesView = () => {
                       className="accordion-collapse collapse show"
                     >
                       <div className="accordion-body">
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>New Launch</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Under Construction</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Ready to move</span>
-                        </div>
+                        {propertyStatus &&
+                          propertyStatus.map((status, i) => {
+                            return (
+                              <div
+                                key={i}
+                                className="tags_property active_widget"
+                              >
+                                <i className="fa-solid fa-plus"></i>
+                                <span>{removeUnderScore(status)}</span>
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
@@ -267,22 +287,18 @@ const PropertiesView = () => {
                       className="accordion-collapse collapse show"
                     >
                       <div className="accordion-body">
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Parking</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Lift</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Swimming Pool</span>
-                        </div>
-                        <div className="tags_property">
-                          <i className="fa-solid fa-plus"></i>
-                          <span>Power Backup</span>
-                        </div>
+                        {amenities &&
+                          amenities.map((amenities, k) => {
+                            return (
+                              <div
+                                key={k}
+                                className="tags_property active_widget"
+                              >
+                                <i className="fa-solid fa-plus"></i>
+                                <span>{amenities?.name}</span>
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
@@ -293,134 +309,6 @@ const PropertiesView = () => {
               <div className="row">
                 <div className="col-sm-12">
                   <ListProperties />
-                  {/* {Array.from({ length: 20 }).map((item, index) => {
-                    return (
-                      <Link
-                        key={index}
-                        href={"/properties/2"}
-                        style={{ textDecoration: "none", color: "#000" }}
-                      >
-                        <div className="inner_card">
-                          <span className="featured_tag">featured</span>
-                          <div className="row align-items-center">
-                            <div className="col-sm-5">
-                              <div className="inner_card_img">
-                                <Slider {...property}>
-                                  <Image src={propertyImage} alt="" />
-                                  <Image src={propertyImage} alt="" />
-                                  <Image src={propertyImage} alt="" />
-                                </Slider>
-                                <div className="inner_card_img_inner"></div>
-                              </div>
-                            </div>
-                            <div className="col-sm-7">
-                              <div className="inner_card_content">
-                                <div className="inner_card_header">
-                                  <h4>Folium By Sumadhura Phase 2</h4>
-                                  <span>
-                                    6035 W North Ave, Chicago, IL, United States
-                                  </span>
-                                </div>
-                                <div className="inner_card_info">
-                                  <div className="inner_card_info_area">
-                                    <i className="fa-solid fa-chart-area"></i>
-                                    <span>326 SqFt</span>
-                                  </div>
-                                  <div className="inner_card_info_area">
-                                    <i className="fa-solid fa-city"></i>
-                                    <span>Ready to Move</span>
-                                  </div>
-                                  <div className="inner_card_info_area">
-                                    <i className="fa-solid fa-bed"></i>
-                                    <span>3</span>
-                                  </div>
-                                  <div className="inner_card_info_area">
-                                    <i className="fa-solid fa-bath"></i>
-                                    <span>1</span>
-                                  </div>
-                                </div>
-                                <div className="inner_card_near pt-1">
-                                  <p className="mb-0">Near By :</p>
-                                  <div className="inner_card_nearby">
-                                    <span>Whitefield Metro station</span>
-                                  </div>
-                                  <div className="inner_card_nearby">
-                                    <span>Shopping Mall</span>
-                                  </div>
-                                </div>
-                                <div className="inner_card_price">
-                                  <div className="inner_card_number">
-                                    <p>View Number</p>
-                                  </div>
-                                  <div className="inner_card_price_sub">
-                                    <span>₹1.96 - 3.07 Cr</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    );
-                  })} */}
-                </div>
-                <div className="col-sm-12">
-                  <ul
-                    className="reactPaginate"
-                    role="navigation"
-                    aria-label="Pagination"
-                  >
-                    <li className="previous disabled">
-                      <Link
-                        href={""}
-                        className=" "
-                        tabIndex="-1"
-                        role="button"
-                        aria-disabled="true"
-                        aria-label="Previous page"
-                        rel="prev"
-                      >
-                        &lt;
-                      </Link>
-                    </li>
-                    <li className="selected">
-                      <Link
-                        href={""}
-                        rel="canonical"
-                        role="button"
-                        tabIndex="-1"
-                        aria-label="Page 1 is your current page"
-                        aria-current="page"
-                      >
-                        1
-                      </Link>
-                    </li>
-                    <li className="">
-                      <Link
-                        href={""}
-                        rel="canonical"
-                        role="button"
-                        tabIndex="-1"
-                        aria-label="Page 1 is your current page"
-                        aria-current="page"
-                      >
-                        2
-                      </Link>
-                    </li>
-                    <li className="next disabled">
-                      <Link
-                        href={""}
-                        className=" "
-                        tabIndex="-1"
-                        role="button"
-                        aria-disabled="true"
-                        aria-label="Next page"
-                        rel="next"
-                      >
-                        &gt;
-                      </Link>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
