@@ -19,5 +19,13 @@ const getPropertiesListedFor = async () => {
     console.log(error.message);
   }
 };
+const getZoneList = async () => {
+  try {
+    const res = await API.get(endpoints.zoneList);
+    return res.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-export { getPropertiesList, getPropertiesListedFor };
+export { getPropertiesList, getPropertiesListedFor, getZoneList };

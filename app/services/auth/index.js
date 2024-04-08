@@ -26,4 +26,4 @@ const otpVerifyUser = async (optData) => {
   }
 };
 
-export { createAccount, otpVerifyUser };
+export { createAccount, otpVerifyUser, signIn };

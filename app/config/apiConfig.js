@@ -3,12 +3,15 @@ import endpoints from "./endpoints";
 import { makeStore } from "../lib/store";
 const fetchClient = () => {
   const auth = makeStore().getState().Auth;
+  const token = localStorage.getItem("userTokenProperty");
+  console.log("token..........", token);
   const defaultOptions = {
     baseURL: endpoints.BASE_URL,
     headers: {
       // "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${auth?.token !== "" ? auth?.token : ""}`,
+      // Authorization: `Bearer ${auth?.token !== "" ? auth?.token : ""}`,
+      Authorization: `Bearer ${token}`,
     },
   };
 

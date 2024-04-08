@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { createAccount, otpVerifyUser } from "../services/auth";
+import { createAccount, otpVerifyUser, signIn } from "../services/auth";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { addTodo } from "../lib/features/todoSlice";
 import { toast } from "react-toastify";
@@ -37,6 +37,14 @@ const LoginModal = ({ show, setShow }) => {
     email: "",
     password: "",
   });
+  console.log("........loginUserData", loginUserData);
+  const handleChangeLogin = async (e) => {
+    let { name, value } = e.target;
+
+    setLoginUserData((prevstate) => {
+      return { ...prevstate, [name]: value };
+    });
+  };
   const handleChange = async (e) => {
     let { name, value } = e.target;
     // if (name === "profilePic") {
@@ -151,7 +159,27 @@ const LoginModal = ({ show, setShow }) => {
     }
     console.log("Submitted OTP:", otp);
   };
-  const loginHandLer = () => {};
+  const loginHandLer = async () => {
+    const data = {
+      email: loginUserData.email,
+      password: loginUserData.password,
+    };
+    try {
+      setLoader(true);
+      const res = await signIn(data);
+      if (res?.ack === 1) {
+        console.log(".........loginres", res);
+        localStorage.setItem("userTokenProperty", res?.data?.token);
+        setShow(false);
+      } else {
+        console.error("error");
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoader(false);
+    }
+  };
   return (
     <>
       <Modal
@@ -217,15 +245,17 @@ const LoginModal = ({ show, setShow }) => {
                   className="form-control mt-2"
                   placeholder="Email ID"
                   name="email"
-                  onChange={handleChange}
+                  value={loginUserData.email}
+                  onChange={handleChangeLogin}
                 />
 
                 <input
                   type="text"
                   className="form-control mt-3"
                   placeholder="Password"
+                  value={loginUserData.password}
                   name="password"
-                  onChange={handleChange}
+                  onChange={handleChangeLogin}
                 />
               </div>
             </Modal.Body>
@@ -237,7 +267,7 @@ const LoginModal = ({ show, setShow }) => {
               }}
             >
               <button
-                onClick={"createUserHandler"}
+                onClick={loginHandLer}
                 style={{ width: "100%", textAlign: "center", border: "none" }}
                 className="post_properties"
                 type="button"

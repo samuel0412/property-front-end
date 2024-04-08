@@ -1,28 +1,99 @@
 "use client";
-import React, { useState } from "react";
-import { getPropertiesListedFor } from "../services/properties";
+import React, { useMemo, useState } from "react";
+import { getPropertiesListedFor, getZoneList } from "../services/properties";
 import { useEffect } from "react";
 
 function PostNewProperty() {
   const [step, setStep] = useState(1);
-  const [propertyListedFor, setPropertyListedFor] = useState();
-  const [propertyListedForValue, setPropertyListedForValue] = useState("");
-  console.log("............propertyListedForValue", propertyListedForValue);
+  // const [propertyListedFor, setPropertyListedFor] = useState();
+  const [propertyData, setPropertyData] = useState({
+    name: "",
+    locationId: "",
+    zoneId: "",
+    numOfBhk: "",
+    numOfBalcony: "",
+    carpetArea: "",
+    builtUpArea: "",
+    amount: "",
+    amountPerUnit: "",
+    areaUnit: "",
+    coveredParking: "",
+    openParking: "",
+    totalFloor: "",
+    propertyFloor: "",
+    furnishedType: "",
+    availibility: "",
+    ageOfProperty: "",
+    possessionYear: "",
+    listedFor: "Sell",
+    purpose: "",
+    type: "",
+    facing: "",
+    numSeats: "",
+    album: [],
+    amenitiesId: [],
+    placesId: [],
+  });
+  console.log("........propertyData", propertyData);
+  const [selectedDiv, setSelectedDiv] = useState(null);
+  // console.log("..........selectedDiv", selectedDiv);
+  const [zoneList, setZoneList] = useState([]);
+  // console.log("zoneList.............", zoneList);
   const postPropertyStepper = () => {
+    // console.log("hello");
     setStep(step + 1);
   };
-  const getPropertiesListedForHandler = async () => {
+  // const getPropertiesListedForHandler = async () => {
+  //   try {
+  //     const res = await getPropertiesListedFor();
+  //     if (res.ack === 1) {
+  //       setPropertyListedFor(res.data);
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getPropertiesListedForHandler();
+  // }, []);
+  const handleChange = async (e) => {
+    let { name, value } = e.target;
+    // if (name === "profilePic") {
+    //   let file = e.target.files[0];
+    //   const url = await uploadUrl(file, file?.name);
+    //   setUserData((prevstate) => {
+    //     return { ...prevstate, logoUpload: url.location };
+    //   });
+    // }
+    setPropertyData((prevstate) => {
+      return { ...prevstate, [name]: value };
+    });
+    // setErrors({
+    //   email: "",
+    //   userName: "",
+    //   password: "",
+    //   contactNumber: "",
+    // });
+  };
+  const propertyType = ["Flat", "House", "Plot", "office", "Retail"];
+  const selectDiv = (value) => {
+    setSelectedDiv(value);
+  };
+  const getZoneListHandler = async () => {
     try {
-      const res = await getPropertiesListedFor();
+      const res = await getZoneList();
       if (res.ack === 1) {
-        setPropertyListedFor(res.data);
+        setZoneList(res.data);
+      } else {
+        console.error("error");
       }
     } catch (e) {
       console.error(e);
+    } finally {
     }
   };
   useEffect(() => {
-    getPropertiesListedForHandler();
+    getZoneListHandler();
   }, []);
   return (
     <div>
@@ -94,20 +165,12 @@ function PostNewProperty() {
                         <select
                           className="form-select form-control"
                           aria-label="Default select example"
-                          onChange={(e) =>
-                            setPropertyListedForValue(e.target.value)
-                          }
+                          onChange={handleChange}
+                          name="listedFor"
                         >
-                          <option selected>Open this select menu</option>
-                          {propertyListedFor?.map((item, index) => {
-                            return (
-                              <>
-                                <option value={item} key={index}>
-                                  {item}
-                                </option>
-                              </>
-                            );
-                          })}
+                          {/* <option selected>Open this select menu</option> */}
+                          <option value={"Sell"}>Sell</option>
+                          <option value={"Buy"}>Buy</option>
                         </select>
                       </div>
                     </div>
@@ -118,9 +181,10 @@ function PostNewProperty() {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="inlineRadioOptions"
+                            name="purpose"
                             id="Residential"
-                            value="option1"
+                            value="Residential"
+                            onChange={handleChange}
                           />
                           <label
                             className="form-check-label"
@@ -133,9 +197,10 @@ function PostNewProperty() {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="inlineRadioOptions"
+                            name="purpose"
                             id="Commercial"
-                            value="option2"
+                            value="Commercial"
+                            onChange={handleChange}
                           />
                           <label
                             className="form-check-label"
@@ -145,10 +210,25 @@ function PostNewProperty() {
                           </label>
                         </div>
                       </div>
-                      <div className="basic_tag">
-                        <span>Flat/Apartment</span>
+                      <div className="d-flex">
+                        {propertyType.map((item, index) => {
+                          return (
+                            <div key={index} onClick={() => selectDiv(item)}>
+                              <div
+                                className="basic_tag"
+                                style={{
+                                  backgroundColor:
+                                    selectedDiv === item ? "#64DDBB" : "#fff", // Highlight selected div
+                                }}
+                              >
+                                <span>{item}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                      <div className="basic_tag">
+
+                      {/* <div className="basic_tag">
                         <span>Independent House / Villa</span>
                       </div>
                       <div className="basic_tag">
@@ -159,7 +239,7 @@ function PostNewProperty() {
                       </div>
                       <div className="basic_tag">
                         <span>Other</span>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="search-btn pt-5">
                       <button onClick={postPropertyStepper}>Continue</button>
@@ -176,25 +256,56 @@ function PostNewProperty() {
                     </span>
                     <div className="row mt-5">
                       <div className="col-sm-6">
-                        <input
+                        {/* <input
                           type="text"
                           className="form-control"
                           placeholder="City"
-                        />
+                          name=""
+                          onChange={handleChange}
+                        /> */}
+                        <label
+                          className=""
+                          style={{ fontSize: "17px", fontWeight: "600" }}
+                        >
+                          Zone
+                        </label>
+                        <select
+                          className="form-select form-control"
+                          aria-label="Default select example"
+                          onChange={handleChange}
+                          name="zoneId"
+                        >
+                          {/* <option selected>Open this select menu</option> */}
+                          {zoneList.map((item, index) => {
+                            return (
+                              <>
+                                <option value={item.id} key={index}>
+                                  {item.name}
+                                </option>
+                              </>
+                            );
+                          })}
+                        </select>
                         <input
                           type="text"
                           className="form-control"
                           placeholder="Apartment Society"
+                          name=""
+                          onChange={handleChange}
                         />
                         <input
                           type="text"
                           className="form-control"
                           placeholder="Locality"
+                          name=""
+                          onChange={handleChange}
                         />
                         <input
                           type="text"
                           className="form-control"
                           placeholder="House No. (Optional)"
+                          name=""
+                          onChange={handleChange}
                         />
                       </div>
                     </div>
